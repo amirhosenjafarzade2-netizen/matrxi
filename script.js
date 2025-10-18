@@ -230,7 +230,7 @@ function resetDefaults() {
     loadPreset('classic');
 }
 
-// Copy/Export functions (same as before)
+// Copy/Export functions
 function copyMatrixCode(event) {
     const config = getConfig();
     const code = `<!DOCTYPE html><html><body style="margin:0;overflow:hidden;background:${config.bgColor}"><canvas id=c></canvas><script>const c=document.getElementById('c'),ctx=c.getContext('2d');c.width=window.innerWidth;c.height=window.innerHeight;const chars='${config.symbols.join('')}';const s=${config.fontSize};const drops=Array(Math.floor(c.width/s)*${config.density}).fill(0).map(()=>Math.random()*c.height*-0.5);setInterval(()=>{ctx.fillStyle='${config.bgColor}'+Math.floor(255*(1-${config.trail})).toString(16).padStart(2,'0');ctx.fillRect(0,0,c.width,c.height);ctx.shadowBlur=${config.glow};ctx.shadowColor='${config.color}';ctx.fillStyle='${config.color}';ctx.font=s+'px monospace';drops.forEach((y,i)=>{let x=(i%(c.width/s))*s;${config.wave>0?`x+=Math.sin(y*0.1+Date.now()*0.001)*${config.wave};`:''}ctx.fillText(chars[Math.random()*chars.length|0],x,y*s);if(y*s>c.height&&Math.random()>0.7)drops[i]=0;drops[i]++;});}, ${config.speed})</script></body></html>`;
@@ -243,8 +243,52 @@ function copyMatrixCode(event) {
 function exportImage() {
     const link = document.createElement('a');
     link.download = 'groktron.png';
-    link.href = canvas.toDataURL();
+    link.href = canvas.toDataURL('image/png');
     link.click();
+}
+
+function exportGif() {
+    const duration = parseInt(document.getElementById('gif-duration').value) * 1000;
+    const resolution = parseFloat(document.getElementById('gif-resolution').value);
+    const gif = new GIF({
+        workers: 2,
+        quality: 10,
+        width: Math.floor(canvas.width * resolution),
+        height: Math.floor(canvas.height * resolution)
+    });
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = Math.floor(canvas.width * resolution);
+    tempCanvas.height = Math.floor(canvas.height * resolution);
+    const tempCtx = tempCanvas.getContext('2d');
+
+    let frames = Math.floor(duration / getConfig().speed);
+    let frameTime = 0;
+
+    function captureFrame() {
+        if (frameTime >= duration) {
+            gif.finish();
+            gif.render();
+            return;
+        }
+
+        tempCtx.drawImage(canvas, 0, 0, tempCanvas.width, tempCanvas.height);
+        tempCtx.drawImage(particleCanvas, 0, 0, tempCanvas.width, tempCanvas.height);
+        gif.addFrame(tempCtx, { copy: true, delay: getConfig().speed });
+
+        frameTime += getConfig().speed;
+        requestAnimationFrame(captureFrame);
+    }
+
+    gif.on('finished', function(blob) {
+        const link = document.createElement('a');
+        link.download = 'groktron.gif';
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    captureFrame();
 }
 
 // EVENTS
