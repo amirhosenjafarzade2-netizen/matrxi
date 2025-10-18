@@ -1,7 +1,10 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="🌌 Groktron Matrix Ultimate", layout="wide", height=800)
+st.set_page_config(
+    page_title="🌌 Groktron Matrix Ultimate", 
+    layout="wide"
+)
 
 # Load your 3 files and embed them
 with open("index.html", "r", encoding="utf-8") as f:
