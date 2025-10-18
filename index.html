@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROKTRON MATRIX ULTIMATE v8.0 🌌 15 PRESETS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+    <canvas id="matrix-bg"></canvas>
+    <canvas id="particles" class="particles"></canvas>
+    <div class="scanline"></div>
+    
+    <div id="app-container">
+        <div id="header">
+            <div id="title">🌌 GROKTRON ULTIMATE v8.0</div>
+            <div id="controls-top">
+                <button class="icon-btn" onclick="togglePause(event)">⏸️</button>
+                <button class="icon-btn active" data-theme="dark" onclick="setTheme('dark', event)">🌙</button>
+                <button class="icon-btn" data-theme="neon" onclick="setTheme('neon', event)">💜</button>
+                <button class="icon-btn" data-theme="light" onclick="setTheme('light', event)">☀️</button>
+            </div>
+        </div>
+        
+        <div id="main-content">
+            <div id="customizer">
+                <div class="section">
+                    <h3>🎨 COLORS</h3>
+                    <div class="input-group">
+                        <label>BACKGROUND</label>
+                        <input type="color" id="bg-color" value="#000000" oninput="updateMatrix()">
+                    </div>
+                    <div class="input-group">
+                        <label>CHARACTERS</label>
+                        <input type="color" id="char-color" value="#00ff00" oninput="updateMatrix()">
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>🔤 CHARACTERS</h3>
+                    <select id="char-set" onchange="updateMatrix()">
+                        <option value="japanese">🇯🇵 Japanese</option>
+                        <option value="english">📝 English</option>
+                        <option value="numbers">🔢 Numbers</option>
+                        <option value="ascii">💻 ASCII</option>
+                        <option value="binary">01 Binary</option>
+                        <option value="blocks">▄▀ Blocks</option>
+                        <option value="greek">🏛️ Greek</option>
+                        <option value="symbols">✦ Symbols</option>
+                    </select>
+                </div>
+                
+                <div class="section">
+                    <h3>⚙️ ANIMATION</h3>
+                    <div class="input-group">
+                        <label>SPEED</label>
+                        <div class="slider-group">
+                            <input type="range" id="speed" min="10" max="150" value="50" oninput="updateMatrix()">
+                            <span id="speed-value">50ms</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>DENSITY</label>
+                        <div class="slider-group">
+                            <input type="range" id="density" min="0.3" max="3" step="0.1" value="1" oninput="updateMatrix()">
+                            <span id="density-value">1.0x</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>SIZE</label>
+                        <div class="slider-group">
+                            <input type="range" id="font-size" min="8" max="32" value="14" oninput="updateMatrix()">
+                            <span id="font-value">14px</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>DIRECTION</label>
+                        <select id="direction" onchange="updateMatrix()">
+                            <option value="down">⬇️ Down</option>
+                            <option value="up">⬆️ Up</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>✨ EFFECTS</h3>
+                    <div class="input-group">
+                        <label>GLOW</label>
+                        <div class="slider-group">
+                            <input type="range" id="glow" min="0" max="30" value="5" oninput="updateMatrix()">
+                            <span id="glow-value">5</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>TRAIL</label>
+                        <div class="slider-group">
+                            <input type="range" id="trail" min="0.05" max="0.4" step="0.01" value="0.13" oninput="updateMatrix()">
+                            <span id="trail-value">0.13</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>WAVE</label>
+                        <div class="slider-group">
+                            <input type="range" id="wave" min="0" max="15" value="0" oninput="updateMatrix()">
+                            <span id="wave-value">0</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>PARTICLES</label>
+                        <div class="slider-group">
+                            <input type="range" id="particles" min="0" max="100" value="0" oninput="updateMatrix()">
+                            <span id="particles-value">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>💾 CONTROLS</h3>
+                    <div class="btn-group">
+                        <button class="btn" onclick="randomize()">🎲 RANDOM</button>
+                        <button class="btn" onclick="resetDefaults()">↺ RESET</button>
+                    </div>
+                    <button class="btn" onclick="copyMatrixCode(event)">📋 COPY</button>
+                    <button class="btn" onclick="exportImage()">📸 SAVE</button>
+                </div>
+                
+                <div class="section">
+                    <h3>⚡ 15 PRESETS</h3>
+                    <div class="preset-grid">
+                        <button class="btn preset-btn" onclick="loadPreset('classic')">CLASSIC</button>
+                        <button class="btn preset-btn" onclick="loadPreset('cyber')">CYBER</button>
+                        <button class="btn preset-btn" onclick="loadPreset('hacker')">HACKER</button>
+                        <button class="btn preset-btn" onclick="loadPreset('binary')">BINARY</button>
+                        <button class="btn preset-btn" onclick="loadPreset('neon')">NEON</button>
+                        <button class="btn preset-btn" onclick="loadPreset('retro')">RETRO</button>
+                        <button class="btn preset-btn" onclick="loadPreset('fire')">FIRE</button>
+                        <button class="btn preset-btn" onclick="loadPreset('ice')">ICE</button>
+                        <button class="btn preset-btn" onclick="loadPreset('plasma')">PLASMA</button>
+                        <button class="btn preset-btn" onclick="loadPreset('matrix')">MATRIX</button>
+                        <button class="btn preset-btn" onclick="loadPreset('glitch')">GLITCH</button>
+                        <button class="btn preset-btn" onclick="loadPreset('rainbow')">🌈</button>
+                        <button class="btn preset-btn" onclick="loadPreset('ghost')">GHOST</button>
+                        <button class="btn preset-btn" onclick="loadPreset('storm')">STORM</button>
+                        <button class="btn preset-btn" onclick="loadPreset('ultimate')">ULTIMATE</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="preview">
+                <div id="fps-counter">FPS: <span id="fps">60</span></div>
+                <div id="status">🌌 READY - Try presets!</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
