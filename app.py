@@ -3,7 +3,6 @@ import streamlit.components.v1 as components
 
 st.set_page_config(page_title="🌌 Groktron Matrix Ultimate", layout="wide")
 
-# HIDE STREAMLIT MENU + BACKGROUND
 st.markdown("""
     <style>
     [data-testid="stSidebar"] {display: none !important}
@@ -13,7 +12,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# FULLSCREEN HTML EMBED
 with open("index.html", "r", encoding="utf-8") as f:
     html_content = f.read()
 
@@ -22,10 +20,6 @@ components.html(
     <div style="width:100vw;height:100vh;overflow:hidden;margin:0;padding:0;">
         {html_content}
     </div>
-    <script>
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-    </script>
     """,
     height=1080,
     scrolling=False
