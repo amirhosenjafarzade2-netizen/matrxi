@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GROKTRON MATRIX ULTIMATE v8.0 🌌 15 PRESETS</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.min.js"></script>
 </head>
 <body data-theme="dark">
     <canvas id="matrix-bg"></canvas>
@@ -121,7 +122,21 @@
                         <button class="btn" onclick="resetDefaults()">↺ RESET</button>
                     </div>
                     <button class="btn" onclick="copyMatrixCode(event)">📋 COPY</button>
-                    <button class="btn" onclick="exportImage()">📸 SAVE</button>
+                    <div class="input-group">
+                        <label>SAVE AS</label>
+                        <button class="btn" onclick="exportImage()">📸 PNG</button>
+                        <div class="slider-group">
+                            <label>GIF DURATION (s)</label>
+                            <input type="range" id="gif-duration" min="1" max="10" value="5" step="1">
+                            <span id="gif-duration-value">5s</span>
+                        </div>
+                        <div class="slider-group">
+                            <label>GIF RESOLUTION</label>
+                            <input type="range" id="gif-resolution" min="0.1" max="1" value="0.5" step="0.1">
+                            <span id="gif-resolution-value">0.5x</span>
+                        </div>
+                        <button class="btn" onclick="exportGif()">🎞️ GIF</button>
+                    </div>
                 </div>
                 
                 <div class="section">
